@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>Task List</h1>
-<form action="/add_task" method="post">
+<form action="{{ url_for('add_task') }}" method="post">
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" required>
     <br>
@@ -17,9 +17,9 @@
 <ul>
     {% for task in tasks %}
         <li>{{ task.title }} - {{ task.description }} - {{ task.status }}
-            <a href="{{ url_for('remove_task', task_index=loop.index-1) }}">remove</a>
-            <a href="{{ url_for('complete_task', task_index=loop.index-1) }}">complete</a>
-            <a href="{{ url_for('fail_task', task_index=loop.index-1) }}">fail</a>
+            <a href="{{ url_for('remove_task', task_id=task.task_id) }}">remove</a>
+            <a href="{{ url_for('complete_task', task_id=task.task_id) }}">complete</a>
+            <a href="{{ url_for('fail_task', task_id=task.task_id) }}">fail</a>
         </li>
     {% endfor %}
 </ul>

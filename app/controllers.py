@@ -5,10 +5,14 @@ class StatusObserver:
     def __init__(self, task_list):
         self.task_list = task_list
 
-    def update(self, task):
-        print(f'Статус задачи "{task.title}" изменился на {task.status}')
-        if task.status == 'Выполнена':
-            self.task_list.remove_task(task)
+    def update(self, task_id):
+        print(task_id)
+        task = self.task_list.get_task_by_id(task_id)
+        print(task)
+        if task:
+            print(f'Статус задачи "{task.title}" изменился на {task.status}')
+            if task.status == 'Выполнена':
+                self.task_list.remove_task(task_id)
 
 
 class TaskController:
@@ -19,24 +23,27 @@ class TaskController:
     def add_observer(self, observer):
         self.observers.append(observer)
 
-    def notify_observers(self, task):
+    def notify_observers(self, task_id):
         for observer in self.observers:
-            observer.update(task)
+            observer.update(task_id)
 
     def add_task(self, title, description):
-        task = Task(title, description)
+        task_id = len(self.task_list.get_all_tasks()) + 1
+        task = Task(task_id, title, description)
         self.task_list.add_task(task)
+        self.notify_observers(task_id)
 
-    def remove_task(self, task):
-        self.task_list.remove_task(task)
+    def remove_task(self, task_id):
+        self.task_list.remove_task(task_id)
+        self.notify_observers(task_id)
 
-    def complete_task(self, task):
-        self.task_list.complete_tasks(task)
-        self.notify_observers(task)
+    def complete_task(self, task_id):
+        self.task_list.complete_task(task_id)
+        self.notify_observers(task_id)
 
-    def fail_task(self, task):
-        self.task_list.fail_task(task)
-        self.notify_observers(task)
+    def fail_task(self, task_id):
+        self.task_list.fail_task(task_id)
+        self.notify_observers(task_id)
 
 
 controller = TaskController(TaskList())

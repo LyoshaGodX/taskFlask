@@ -31,11 +31,11 @@ class TaskController:
         self.task_list.remove_task(task)
 
     def complete_task(self, task):
-        task.status = "Выполнена"
+        self.task_list.complete_tasks(task)
         self.notify_observers(task)
 
     def fail_task(self, task):
-        task.status = "Провалена"
+        self.task_list.fail_task(task)
         self.notify_observers(task)
 
 

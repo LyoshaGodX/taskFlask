@@ -70,8 +70,7 @@ class TaskList(metaclass=SingletonMeta):
         return tasks
 
     def get_task_by_id(self, task_id):
-        tasks = self.get_all_tasks()
-        for task in tasks:
+        for task in self.get_all_tasks():
             if task.task_id == task_id:
                 return task
         return None
